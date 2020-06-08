@@ -23,3 +23,34 @@
 #    - debug: msg="{{ item.guest_name }}"  
 #      with_items: "{{ vminfo.virtual_machines }}"
 
+
+
+
+    - name: Remove a snapshot before creating an new
+      vmware_guest_snapshot:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter: "{{  lookup("env", "datacenter_name") }}"
+        folder: "/{{ datacenter_name }}/vm/"
+        name: "{{ item.guest_name }}"
+        state: absent
+        snapshot_name: snap1-{{ time }}
+        validate_certs: False
+      delegate_to: localhost
+      with_items: "{{ vminfo.virtual_machines }}"
+
+    - name: Create a snapshot
+      vmware_guest_snapshot:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter: "{{  lookup("env", "datacenter_name") }}"
+        folder: "/{{ datacenter_name }}/vm/"
+        name: "{{ item.guest_name }}"
+        state: present
+        snapshot_name: snap1-{{ time }}
+        description: snap1_description
+        validate_certs: False
+      delegate_to: localhost
+      with_items: "{{ vminfo.virtual_machines }}"
