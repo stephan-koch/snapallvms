@@ -12,9 +12,9 @@
   tasks:
     - name: Gather all registered virtual machines
       vmware_vm_info:
-        hostname: '{{ vcenter_hostname }}'
-        username: '{{ vcenter_username }}'
-        password: '{{ vcenter_password }}'
+        hostname: '{{ VMWARE_HOST }}'
+        username: '{{ VMWARE_USER }}'
+        password: '{{ VMWARE_PASSWORD }}'
         vm_type: vm
         validate_certs: False
       delegate_to: localhost
