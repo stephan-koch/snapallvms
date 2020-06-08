@@ -1,0 +1,25 @@
+
+- hosts: localhost
+  gather_facts: no
+  vars:
+#    guest_name: "10.1.36.212-hpecp12"    
+#    time: "{{ lookup('pipe', 'date -d \"0 day ago\" +\"%Y%m%d\"') }}"
+    time: "{{ lookup('pipe', 'date +%d\') }}"
+
+
+
+
+  tasks:
+    - name: Gather all registered virtual machines
+      vmware_vm_info:
+        hostname: '{{ vcenter_hostname }}'
+        username: '{{ vcenter_username }}'
+        password: '{{ vcenter_password }}'
+        vm_type: vm
+        validate_certs: False
+      delegate_to: localhost
+      register: vminfo
+
+#    - debug: msg="{{ item.guest_name }}"  
+#      with_items: "{{ vminfo.virtual_machines }}"
+

@@ -1,0 +1,57 @@
+
+- hosts: localhost
+  gather_facts: no
+  vars:
+    vcenter_hostname: vc.container.demo.local
+    vcenter_username: skoch@demo.local
+    vcenter_password: "Ratingen.123"
+    datacenter_name: ctcbbn
+#    guest_name: "10.1.36.212-hpecp12"    
+#    time: "{{ lookup('pipe', 'date -d \"0 day ago\" +\"%Y%m%d\"') }}"
+    time: "{{ lookup('pipe', 'date +%d\') }}"
+
+
+
+
+  tasks:
+    - name: Gather all registered virtual machines
+      vmware_vm_info:
+        hostname: '{{ vcenter_hostname }}'
+        username: '{{ vcenter_username }}'
+        password: '{{ vcenter_password }}'
+        vm_type: vm
+        validate_certs: False
+      delegate_to: localhost
+      register: vminfo
+
+#    - debug: msg="{{ item.guest_name }}"  
+#      with_items: "{{ vminfo.virtual_machines }}"
+
+    - name: Remove a snapshot before creating an new
+      vmware_guest_snapshot:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter_name }}"
+        folder: "/{{ datacenter_name }}/vm/"
+        name: "{{ item.guest_name }}"
+        state: absent
+        snapshot_name: snap1-{{ time }}
+        validate_certs: False
+      delegate_to: localhost
+      with_items: "{{ vminfo.virtual_machines }}"
+
+    - name: Create a snapshot
+      vmware_guest_snapshot:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter_name }}"
+        folder: "/{{ datacenter_name }}/vm/"
+        name: "{{ item.guest_name }}"
+        state: present
+        snapshot_name: snap1-{{ time }}
+        description: snap1_description
+        validate_certs: False
+      delegate_to: localhost
+      with_items: "{{ vminfo.virtual_machines }}"
