@@ -31,7 +31,7 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter: "{{  lookup("env", "datacenter_name") }}"
+        datacenter: '{{  lookup("env", "datacenter_name") }}'
         folder: "/{{ datacenter_name }}/vm/"
         name: "{{ item.guest_name }}"
         state: absent
@@ -45,7 +45,7 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter: "{{  lookup("env", "datacenter_name") }}"
+        datacenter: '{{  lookup("env", "datacenter_name") }}'
         folder: "/{{ datacenter_name }}/vm/"
         name: "{{ item.guest_name }}"
         state: present
