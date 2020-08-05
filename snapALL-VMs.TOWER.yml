@@ -37,6 +37,7 @@
         state: absent
         snapshot_name: snap1-{{ time }}
         validate_certs: False
+      ignore_errors: yes
       delegate_to: localhost
       with_items: "{{ vminfo.virtual_machines }}"
 
@@ -52,5 +53,6 @@
         snapshot_name: snap1-{{ time }}
         description: snap1_description
         validate_certs: False
+      ignore_errors: yes
       delegate_to: localhost
       with_items: "{{ vminfo.virtual_machines }}"
