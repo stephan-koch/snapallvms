@@ -17,7 +17,7 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         vm_type: vm
         validate_certs: False
-      delegate_to: localhost
+#      delegate_to: localhost
       register: vminfo
 
 #    - debug: msg="{{ item.guest_name }}"  
@@ -38,7 +38,7 @@
         snapshot_name: snap1-{{ time }}
         validate_certs: False
       ignore_errors: yes
-      delegate_to: localhost
+#      delegate_to: localhost
       with_items: "{{ vminfo.virtual_machines }}"
 
     - name: Create a snapshot
@@ -54,5 +54,5 @@
         description: snap1_description
         validate_certs: False
       ignore_errors: yes
-      delegate_to: localhost
+#      delegate_to: localhost
       with_items: "{{ vminfo.virtual_machines }}"
