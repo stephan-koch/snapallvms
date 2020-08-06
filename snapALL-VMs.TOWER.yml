@@ -1,5 +1,6 @@
 
 - hosts: localhost
+  connection: local
   gather_facts: no
   vars:
 #    guest_name: "10.1.36.212-hpecp12"    
