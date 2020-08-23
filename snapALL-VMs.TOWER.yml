@@ -51,6 +51,7 @@
         folder: "/{{ datacenter_name }}/vm/"
         name: "{{ item.guest_name }}"
         state: present
+        memory_dump: yes
         snapshot_name: snap1-{{ time }}
         description: snap1_description
         validate_certs: False
