@@ -1,12 +1,14 @@
 
 - hosts: localhost
   connection: local
-  gather_facts: no
+  gather_facts: yes
   vars:
 #    guest_name: "10.1.36.212-hpecp12"    
 #    time: "{{ lookup('pipe', 'date -d \"0 day ago\" +\"%Y%m%d\"') }}"
-    time: "{{ lookup('pipe', 'date +%d\') }}"
-
+#    time: "{{ lookup('pipe', 'date +%d\') }}"
+     time: "{{ ansible_date_time.weekday }}"
+     week: "{{ ansible_date_time.weeknumber }}"
+     number: "{{ week|int % 2 }}"
 
 
 
@@ -36,7 +38,7 @@
         folder: "/{{ datacenter_name }}/vm/"
         name: "{{ item.guest_name }}"
         state: absent
-        snapshot_name: snap1-{{ time }}
+        snapshot_name: snap-{{numbler}}-{{ time }}
         validate_certs: False
       ignore_errors: yes
 #      delegate_to: localhost
