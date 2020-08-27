@@ -9,6 +9,8 @@
      time: "{{ ansible_date_time.weekday }}"
      week: "{{ ansible_date_time.weeknumber }}"
      number: "{{ week|int % 2 }}"
+     week1: "{{ week + 1}}
+     number1: "{{ week1|int % 2 }}"
 
 
 
@@ -38,7 +40,7 @@
         folder: "/{{ datacenter_name }}/vm/"
         name: "{{ item.guest_name }}"
         state: absent
-        snapshot_name: snap-{{numbler}}-{{ time }}
+        snapshot_name: snap-{{number1}}-{{ time }}
         validate_certs: False
       ignore_errors: yes
 #      delegate_to: localhost
@@ -54,7 +56,7 @@
         name: "{{ item.guest_name }}"
         state: present
         memory_dump: no
-        snapshot_name: snap1-{{ time }}
+        snapshot_name: snap-{{number}}-{{ time }}
         description: snap1_description
         validate_certs: False
       ignore_errors: yes
