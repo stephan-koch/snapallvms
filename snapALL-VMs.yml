@@ -1,17 +1,17 @@
 
 - hosts: localhost
-  gather_facts: no
+  gather_facts: yes
   vars:
     vcenter_hostname: vc.container.demo.local
     vcenter_username: skoch@demo.local
     vcenter_password: "Ratingen.123"
-    datacenter_name: ctcbbn
+    datacenter_name: "ctcbbn"
 #    guest_name: "10.1.36.212-hpecp12"    
 #    time: "{{ lookup('pipe', 'date -d \"0 day ago\" +\"%Y%m%d\"') }}"
 #    time: "{{ lookup('pipe', 'date +%d\') }}"
-     time: "{{ ansible_date_time.weekday }}"
-     week: "{{ ansible_date_time.weeknumber }}"
-     number: "{{ week|int % 2 }}"
+    time: "{{ ansible_date_time.weekday }}"
+    week: "{{ ansible_date_time.weeknumber }}"
+    number: "{{ week|int % 2 }}"
 #     week1: "{{ week|int + 1}}"
 #     number1: "{{ week1|int % 2 }}"
 
@@ -56,7 +56,7 @@
         folder: "/{{ datacenter_name }}/vm/"
         name: "{{ item.guest_name }}"
         state: present
-        memory_dump: yes
+        memory_dump: no
         snapshot_name: snap-{{number}}-{{ time }}
         description: snap1_description
         validate_certs: False
