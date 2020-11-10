@@ -47,7 +47,7 @@
 #      delegate_to: localhost
       with_items: "{{ vminfo.virtual_machines }}"
 
-    - name: Remove a snapshot before creating an new
+    - name: Remove a snapshot before creating an new2
       vmware_guest_snapshot:
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
@@ -59,11 +59,11 @@
         snapshot_name: snap-{{number1}}-{{ time }}
         validate_certs: False
       ignore_errors: yes
-#      delegate_to: localhost
-      with_items: "{{ vminfo.virtual_machines }}"
-        - "{{ vminfo.virtual_machines | json_query(query) }}"
+      with_items:
+       - "{{ vminfo.virtual_machines | json_query(query) }}"
       vars:
         query: "[?folder=='/ctcbbn/vm/HPECP51' ]"
+
 
     - name: Create a snapshot
       vmware_guest_snapshot:
