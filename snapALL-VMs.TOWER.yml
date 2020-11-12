@@ -23,7 +23,6 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         vm_type: vm
         validate_certs: False
-#      delegate_to: localhost
       register: vminfo
 
 #    - debug: msg="{{ item.guest_name }}"  
@@ -44,10 +43,9 @@
         snapshot_name: snap-{{number}}-{{ time }}
         validate_certs: False
       ignore_errors: yes
-#      delegate_to: localhost
       with_items: "{{ vminfo.virtual_machines }}"
 
-    - name: Remove a snapshot before creating an new2
+    - name: Remove 2nd snap for HPECP
       vmware_guest_snapshot:
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
@@ -79,5 +77,4 @@
         description: snap1_description
         validate_certs: False
       ignore_errors: yes
-#      delegate_to: localhost
       with_items: "{{ vminfo.virtual_machines }}"
