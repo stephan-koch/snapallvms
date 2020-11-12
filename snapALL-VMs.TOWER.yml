@@ -16,6 +16,14 @@
 
 
   tasks:
+    - name: Install pip module jmespath
+      pip:
+        name: jmespath
+        umask: "0022"
+        extra_args: "--user"
+        state: present
+
+
     - name: Gather all registered virtual machines
       vmware_vm_info:
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
