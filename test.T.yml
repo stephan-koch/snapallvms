@@ -34,7 +34,6 @@
       register: vminfo
 
     - debug: msg="{{ item.guest_name }}"  
-#      with_items: "{{ vminfo.virtual_machines }}"
       with_items:
        - "{{ vminfo.virtual_machines | json_query(query) }}"
       vars:
