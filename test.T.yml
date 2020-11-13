@@ -31,6 +31,7 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         vm_type: vm
         validate_certs: False
+        show_tag: yes
       register: vminfo
 
     - debug: msg="{{ item.guest_name }}"  
