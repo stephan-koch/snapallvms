@@ -16,12 +16,12 @@
 
 
   tasks:
-    - name: Install pip module jmespath
-      pip:
-        name: jmespath
-        umask: "0022"
-        extra_args: "--user"
-        state: present
+#    - name: Install pip module jmespath
+#      pip:
+#        name: jmespath
+#        umask: "0022"
+#        extra_args: "--user"
+#        state: present
 
 
     - name: Gather all registered virtual machines
@@ -33,7 +33,7 @@
         validate_certs: False
       register: vminfo
 
-    - debug: msg="{{ item.guest_name }}"  
+#    - debug: msg="{{ item.guest_name }}"  
 #      with_items: "{{ vminfo.virtual_machines }}"
 #      with_items:
 #       - "{{ vminfo.virtual_machines | json_query(query) }}"
