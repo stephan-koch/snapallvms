@@ -31,14 +31,13 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         vm_type: vm
         validate_certs: False
-        show_tag: yes
       register: vminfo
 
     - debug: msg="{{ item.guest_name }}"  
       with_items:
        - "{{ vminfo.virtual_machines | json_query(query) }}"
       vars:
-        query: "[?folder=='/ctcbbn/vm/HPECP51' ]"
+        query: "[?guest_name.contains(@,'ddcp') ]"
 
 
 
