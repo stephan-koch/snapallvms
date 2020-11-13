@@ -16,12 +16,12 @@
 
 
   tasks:
-    - name: Install pip module jmespath
-      pip:
-        name: jmespath
-        umask: "0022"
-        extra_args: "--user"
-        state: present
+#    - name: Install pip module jmespath
+#      pip:
+#        name: jmespath
+#        umask: "0022"
+#        extra_args: "--user"
+#        state: present
 
 
     - name: Gather all registered virtual machines
@@ -42,51 +42,3 @@
 
 
 
-
-    - name: Remove a snapshot before creating an new
-      vmware_guest_snapshot:
-        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-        username: '{{ lookup("env", "VMWARE_USER") }}'
-        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter: '{{  lookup("env", "datacenter_name") }}'
-        folder: "/{{ datacenter_name }}/vm/"
-        name: "{{ item.guest_name }}"
-        state: absent
-        snapshot_name: snap-{{number}}-{{ time }}
-        validate_certs: False
-      ignore_errors: yes
-      with_items: "{{ vminfo.virtual_machines }}"
-
-    - name: Remove 2nd snap for HPECP
-      vmware_guest_snapshot:
-        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-        username: '{{ lookup("env", "VMWARE_USER") }}'
-        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter: '{{  lookup("env", "datacenter_name") }}'
-        folder: "/{{ datacenter_name }}/vm/"
-        name: "{{ item.guest_name }}"
-        state: absent
-        snapshot_name: snap-{{number1}}-{{ time }}
-        validate_certs: False
-      ignore_errors: yes
-      with_items:
-       - "{{ vminfo.virtual_machines | json_query(query) }}"
-      vars:
-        query: "[?folder=='/ctcbbn/vm/HPECP51' ]"
-
-
-    - name: Create a snapshot
-      vmware_guest_snapshot:
-        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-        username: '{{ lookup("env", "VMWARE_USER") }}'
-        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter: '{{  lookup("env", "datacenter_name") }}'
-        folder: "/{{ datacenter_name }}/vm/"
-        name: "{{ item.guest_name }}"
-        state: present
-        memory_dump: no
-        snapshot_name: snap-{{number}}-{{ time }}
-        description: snap1_description
-        validate_certs: False
-      ignore_errors: yes
-      with_items: "{{ vminfo.virtual_machines }}"
