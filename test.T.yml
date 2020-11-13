@@ -29,6 +29,7 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        folder: "/ctcbbn/vm/HPECP51"
         vm_type: vm
         validate_certs: False
       register: vminfo
@@ -37,7 +38,7 @@
       with_items:
        - "{{ vm_info.virtual_machines | json_query(query) }}"
       vars:
-        query: "[?'guest_name'=='10.1.32.130-ddcp130']"
+        query: "[?guest_name=='10.1.32.130-ddcp130']"
 
 
 
