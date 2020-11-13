@@ -1,0 +1,92 @@
+
+
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+#    guest_name: "10.1.36.212-hpecp12"    
+#    time: "{{ lookup('pipe', 'date -d \"0 day ago\" +\"%Y%m%d\"') }}"
+#    time: "{{ lookup('pipe', 'date +%d\') }}"
+     time: "{{ ansible_date_time.weekday }}"
+     week: "{{ ansible_date_time.weeknumber }}"
+     number: "{{ week|int % 2 }}"
+     week1: "{{ week|int + 1}}"
+     number1: "{{ week1|int % 2 }}"
+
+
+
+  tasks:
+    - name: Install pip module jmespath
+      pip:
+        name: jmespath
+        umask: "0022"
+        extra_args: "--user"
+        state: present
+
+
+    - name: Gather all registered virtual machines
+      vmware_vm_info:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        vm_type: vm
+        validate_certs: False
+      register: vminfo
+
+    - debug: msg="{{ item.guest_name }}"  
+#      with_items: "{{ vminfo.virtual_machines }}"
+      with_items:
+       - "{{ vminfo.virtual_machines | json_query(query) }}"
+      vars:
+        query: "[?folder=='/ctcbbn/vm/HPECP51' ]"
+
+
+
+
+    - name: Remove a snapshot before creating an new
+      vmware_guest_snapshot:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter: '{{  lookup("env", "datacenter_name") }}'
+        folder: "/{{ datacenter_name }}/vm/"
+        name: "{{ item.guest_name }}"
+        state: absent
+        snapshot_name: snap-{{number}}-{{ time }}
+        validate_certs: False
+      ignore_errors: yes
+      with_items: "{{ vminfo.virtual_machines }}"
+
+    - name: Remove 2nd snap for HPECP
+      vmware_guest_snapshot:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter: '{{  lookup("env", "datacenter_name") }}'
+        folder: "/{{ datacenter_name }}/vm/"
+        name: "{{ item.guest_name }}"
+        state: absent
+        snapshot_name: snap-{{number1}}-{{ time }}
+        validate_certs: False
+      ignore_errors: yes
+      with_items:
+       - "{{ vminfo.virtual_machines | json_query(query) }}"
+      vars:
+        query: "[?folder=='/ctcbbn/vm/HPECP51' ]"
+
+
+    - name: Create a snapshot
+      vmware_guest_snapshot:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter: '{{  lookup("env", "datacenter_name") }}'
+        folder: "/{{ datacenter_name }}/vm/"
+        name: "{{ item.guest_name }}"
+        state: present
+        memory_dump: no
+        snapshot_name: snap-{{number}}-{{ time }}
+        description: snap1_description
+        validate_certs: False
+      ignore_errors: yes
+      with_items: "{{ vminfo.virtual_machines }}"
