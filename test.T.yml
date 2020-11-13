@@ -35,9 +35,9 @@
 
     - debug: msg="{{ item.guest_name }}"  
       with_items:
-       - "{{ vminfo.virtual_machines | {{  to_json | from_json | json_query(query) }}"
+       - "{{ vm_info.virtual_machines | json_query(query) }}"
       vars:
-        query: "[?guest_name.contains(@,'ddcp') ]"
+        query: "[?guest_name=='10.1.32.130-ddcp130']"
 
 
 
