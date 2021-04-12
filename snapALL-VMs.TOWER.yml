@@ -71,28 +71,28 @@
       ignore_errors: yes
       with_items: "{{ vminfo.virtual_machines }}"
 
-    - name: Gather all registered virtual machines in folder HPECP51
-      vmware_vm_info:
-        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-        username: '{{ lookup("env", "VMWARE_USER") }}'
-        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        folder: "/ctcbbn/vm/HPECP51"
-        vm_type: vm
-        validate_certs: False
-      register: vminfo
-
-    - name: Remove 2nd snap for HPECP
-      vmware_guest_snapshot:
-        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-        username: '{{ lookup("env", "VMWARE_USER") }}'
-        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter: '{{  lookup("env", "datacenter_name") }}'
-        folder: "/{{ datacenter_name }}/vm/"
-        name: "{{ item.guest_name }}"
-        state: absent
-        snapshot_name: snap-{{number1}}-{{ time }}
-        validate_certs: False
-      ignore_errors: yes
-      with_items:
-       - "{{ vminfo.virtual_machines }}"
+    #- name: Gather all registered virtual machines in folder HPECP51
+    #  vmware_vm_info:
+    #    hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+    #    username: '{{ lookup("env", "VMWARE_USER") }}'
+    #    password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+    #    folder: "/ctcbbn/vm/HPECP53"
+    #    vm_type: vm
+    #    validate_certs: False
+    #  register: vminfo
+#
+#    - name: Remove 2nd snap for HPECP
+#      vmware_guest_snapshot:
+#        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+#        username: '{{ lookup("env", "VMWARE_USER") }}'
+#        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+#        datacenter: '{{  lookup("env", "datacenter_name") }}'
+#        folder: "/{{ datacenter_name }}/vm/"
+#        name: "{{ item.guest_name }}"
+#        state: absent
+#        snapshot_name: snap-{{number1}}-{{ time }}
+#        validate_certs: False
+#      ignore_errors: yes
+#      with_items:
+#       - "{{ vminfo.virtual_machines }}"
 
